@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">aircraftappv3</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">BlueTooth</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="bluetooth_image">Bluetooth Image</string>
+    <string name="turn_on_off">TURN ON/OFF</string>
+    <string name="discoverable">Discoverable</string>
+    <string name="discover">DISCOVER</string>
+</resources>
