@@ -1,4 +1,4 @@
-# mobile-app-1.0-4aircraft
+# aircraft mobileapp v3
 
 This repository contains the code for an Android Studio application designed to control aircrafts through Bluetooth connectivity.
 
