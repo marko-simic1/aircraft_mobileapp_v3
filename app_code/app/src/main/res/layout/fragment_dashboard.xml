@@ -52,9 +52,16 @@
         android:layout_height="wrap_content"
         android:text="@string/discover"/>
 
+    <Button
+        android:id="@+id/btnStartConnection"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="186dp"
+        android:layout_height="wrap_content"
+        android:text="@string/start_connection"/>
+
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="300dp"
         android:id="@+id/lvNewDevices"/>
 
 

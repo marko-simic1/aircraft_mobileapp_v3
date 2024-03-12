@@ -39,6 +39,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.aircraftappv3.BluetoothConnectionService;
 import com.example.aircraftappv3.MainActivity;
 import com.example.aircraftappv3.R;
 import com.example.aircraftappv3.databinding.FragmentDashboardBinding;
@@ -46,6 +47,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class DashboardFragment extends Fragment  implements AdapterView.OnItemClickListener {
 
@@ -56,7 +58,11 @@ public class DashboardFragment extends Fragment  implements AdapterView.OnItemCl
     Button btnOn;
     Button btnEnableDisable_Discoverable;
     Button btnDiscover;
+    Button btnStartConnection;
     BluetoothAdapter mBluetoothAdapter;
+    BluetoothConnectionService mBluetoothConnection;
+    private static final UUID MY_UUID_INSECURE = UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
+    BluetoothDevice mBTDevice;
     private FragmentDashboardBinding binding;
 
     //Broadcast receiver for turning Bluetooth on/off
@@ -149,6 +155,7 @@ public class DashboardFragment extends Fragment  implements AdapterView.OnItemCl
                 assert mDevice != null;
                 if(mDevice.getBondState() == BluetoothDevice.BOND_BONDED){
                     Log.d(TAG, "Bond bonded");
+                    mBTDevice = mDevice;
                 }
                 if(mDevice.getBondState() == BluetoothDevice.BOND_BONDING){
                     Log.d(TAG, "Bond bonding");
@@ -172,6 +179,7 @@ public class DashboardFragment extends Fragment  implements AdapterView.OnItemCl
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         lvNewDevices = (ListView)binding.lvNewDevices;
         mBTDevices = new ArrayList<>();
+        btnStartConnection = binding.btnStartConnection;
 
         lvNewDevices.setOnItemClickListener(DashboardFragment.this);
 
@@ -201,7 +209,27 @@ public class DashboardFragment extends Fragment  implements AdapterView.OnItemCl
                 enableDisableBT();
             }
         });
+
+        btnStartConnection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startConnection();
+            }
+        });
         return root;
+    }
+
+    //create method for starting connection
+    public void startConnection(){
+        startBTConnection(mBTDevice,MY_UUID_INSECURE);
+    }
+
+    //starting chat service method
+
+    public void startBTConnection(BluetoothDevice device, UUID uuid){
+        Log.d(TAG, "startBTConnection: Initializing RFCOM Bluetooth Connection.");
+
+        mBluetoothConnection.startClient(device,uuid);
     }
 
     //Function for enabling and disabling Bluetooth on device
@@ -282,9 +310,14 @@ public class DashboardFragment extends Fragment  implements AdapterView.OnItemCl
         Log.d(TAG, "device name = " + deviceName);
         Log.d(TAG, "device address = " + deviceAddress);
 
+        //create the bond.
         if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2){
             Log.d(TAG, "trying to pair with " + deviceName);
             mBTDevices.get(i).createBond();
+
+            mBTDevice = mBTDevices.get(i);
+            mBluetoothConnection = new BluetoothConnectionService(requireContext());
+
         }
 
     }

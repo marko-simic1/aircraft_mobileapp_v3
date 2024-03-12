@@ -7,4 +7,5 @@
     <string name="turn_on_off">TURN ON/OFF</string>
     <string name="discoverable">Discoverable</string>
     <string name="discover">DISCOVER</string>
+    <string name="start_connection">start connection</string>
 </resources>
